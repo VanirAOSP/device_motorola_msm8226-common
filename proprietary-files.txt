@@ -104,6 +104,7 @@ bin/fm_qsoc_patches
 # GPS
 -app/com.qualcomm.location.apk
 -app/com.qualcomm.services.location.apk
+-app/MotGeoFenceSvc.apk
 bin/location-mq
 bin/xtwifi-client
 bin/xtwifi-inet-agent
