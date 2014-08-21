@@ -91,12 +91,7 @@ on boot
     chmod 0660 /dev/ttyHS0
     chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
     chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
-    
-    write /sys/module/msm_hotplug/cpus_boosted 1
-    write /sys/module/msm_hotplug/down_lock_duration 500
-    write /sys/module/msm_hotplug/boost_lock_duration 2500
-    write /sys/module/msm_hotplug/update_rates "200 5:100 50:50 350:200"
-    write /sys/module/msm_hotplug/fast_lane_load 100
+
 
     chmod 0660 /dev/ttyHS2
     chown bluetooth bluetooth /dev/ttyHS2
