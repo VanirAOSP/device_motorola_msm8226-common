@@ -92,9 +92,6 @@ TARGET_PROVIDES_LIBLIGHT := true
 # Logging
 TARGET_USES_LOGD := false
 
-# Media
-TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
-
 # Motorola
 TARGET_USES_MOTOROLA_LOG := true
 
@@ -106,10 +103,7 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_HAS_LARGE_FILESYSTEM := true
 
 # Qualcomm support
-COMMON_GLOBAL_CFLAGS += -DQCOM_BSP
-COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE
 BOARD_USES_QCOM_HARDWARE := true
-TARGET_USES_QCOM_BSP := true
 
 # Recovery
 BOARD_HAS_NO_SELECT_BUTTON := true
@@ -119,57 +113,6 @@ BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_15x24.h\"
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
-
-# SELinux
-BOARD_SEPOLICY_DIRS += \
-    $(LOCAL_PATH)/sepolicy
-
-BOARD_SEPOLICY_UNION += \
-    adbd.te \
-    app.te \
-    bluetooth_loader.te \
-    bridge.te \
-    camera.te \
-    device.te \
-    dhcp.te \
-    dnsmasq.te \
-    domain.te \
-    drmserver.te \
-    file_contexts \
-    file.te \
-    hostapd.te \
-    init_shell.te \
-    init.te \
-    libqc-opt.te \
-    mediaserver.te \
-    mpdecision.te \
-    netd.te \
-    netmgrd.te \
-    nfc.te \
-    property_contexts \
-    property.te \
-    qcom.te \
-    qmux.te \
-    radio.te \
-    rild.te \
-    rmt.te \
-    sdcard_internal.te \
-    sdcardd.te \
-    sensors.te \
-    shell.te \
-    surfaceflinger.te \
-    system_server.te \
-    tee.te \
-    te_macros \
-    thermald.te \
-    ueventd.te \
-    vold.te \
-    wpa_supplicant.te \
-    zygote.te
-
-ifneq ($(TARGET_BUILD_VARIANT),user)
-    BOARD_SEPOLICY_UNION += su.te
-endif
 
 # Vold
 BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
