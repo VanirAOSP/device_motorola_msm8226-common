@@ -31,13 +31,11 @@ TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
-TARGET_CPU_MEMCPY_BASE_OPT_DISABLE := true
 TARGET_CPU_SMP := true
 TARGET_CPU_VARIANT := krait
 TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
 TARGET_KERNEL_CPU_VARIANT := cortex-a15
 TARGET_ARCH_VARIANT_CPU := cortex-a15
-TARGET_ENABLE_PREBUILT_CLANG := true
 TARGET_KERNEL_CUSTOM_TOOLCHAIN := linaro-4.9
 TARGET_USE_KRAIT_BIONIC_OPTIMIZATION := true
 
@@ -53,19 +51,30 @@ BOARD_KERNEL_SEPARATED_DT := true
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 TARGET_KERNEL_SOURCE := kernel/motorola/msm8226
 
+WLAN_MODULES:
+	mkdir -p $(KERNEL_MODULES_OUT)/pronto
+	mv $(KERNEL_MODULES_OUT)/wlan.ko $(KERNEL_MODULES_OUT)/pronto/pronto_wlan.ko
+	ln -sf /system/lib/modules/pronto/pronto_wlan.ko $(TARGET_OUT)/lib/modules/wlan.ko
+
+TARGET_KERNEL_MODULES += WLAN_MODULES
+
 # Audio
-AUDIO_FEATURE_ENABLED_FM := true
-AUDIO_FEATURE_ENABLED_MULTI_VOICE_SESSIONS := true
+AUDIO_FEATURE_DISABLED_ANC_HEADSET := true
+AUDIO_FEATURE_DISABLED_DS1_DOLBY_DDP := true
+AUDIO_FEATURE_DISABLED_SSR := true
 BOARD_USES_ALSA_AUDIO := true
+TARGET_QCOM_AUDIO_VARIANT := caf
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_QCOM := true
-BLUETOOTH_HCI_USE_MCT := true
 
 # Camera
 USE_DEVICE_SPECIFIC_CAMERA := true
+
+# Classpath
+PRODUCT_BOOT_JARS := $(subst $(space),:,$(PRODUCT_BOOT_JARS))
 
 # CMHW
 BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw/
@@ -73,6 +82,7 @@ BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw/
 # Display
 BOARD_EGL_CFG := $(LOCAL_PATH)/configs/egl.cfg
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+TARGET_QCOM_DISPLAY_VARIANT := caf-new
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
 USE_OPENGL_RENDERER := true
@@ -80,17 +90,12 @@ USE_OPENGL_RENDERER := true
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
 
-# FM
-TARGET_QCOM_NO_FM_FIRMWARE := true
-
-# Fonts
-EXTENDED_FONT_FOOTPRINT := true
-
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
 
-# Memory
-MALLOC_IMPL := dlmalloc
+# Media
+TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
+TARGET_QCOM_MEDIA_VARIANT := caf-new
 
 # Motorola
 TARGET_USES_MOTOROLA_LOG := true
@@ -100,46 +105,73 @@ TARGET_POWERHAL_VARIANT := qcom
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
+BOARD_HAS_LARGE_FILESYSTEM := true
 
 # Qualcomm support
+COMMON_GLOBAL_CFLAGS += -DQCOM_BSP
+COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE
 BOARD_USES_QCOM_HARDWARE := true
+TARGET_USES_QCOM_BSP := true
 
 # Recovery
-COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
+BOARD_HAS_NO_SELECT_BUTTON := true
+BOARD_RECOVERY_SWIPE := true
+BOARD_SUPPRESS_EMMC_WIPE := true
+BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_15x24.h\"
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
-# Release tools
-TARGET_RELEASETOOLS_EXTENSIONS := device/motorola/msm8226-common
-
 # SELinux
--include device/qcom/sepolicy/sepolicy.mk
-
 BOARD_SEPOLICY_DIRS += \
-    device/motorola/msm8226-common/sepolicy
+    $(LOCAL_PATH)/sepolicy
 
 BOARD_SEPOLICY_UNION += \
-    akmd8963.te \
-    atvc.te \
-    batt_health.te \
+    adbd.te \
+    app.te \
+    bluetooth_loader.te \
+    bridge.te \
+    camera.te \
     device.te \
+    dhcp.te \
+    dnsmasq.te \
+    domain.te \
+    drmserver.te \
     file_contexts \
     file.te \
-    init.te \
+    hostapd.te \
     init_shell.te \
-    keystore.te \
+    init.te \
+    libqc-opt.te \
     mediaserver.te \
-    mm-qcamerad.te \
     mpdecision.te \
-    platform_app.te \
+    netd.te \
+    netmgrd.te \
+    nfc.te \
     property_contexts \
     property.te \
+    qcom.te \
+    qmux.te \
+    radio.te \
     rild.te \
-    rmt_storage.te \
-    system_app.te \
-    system_server.te \
-    thermal-engine.te
+    rmt.te \
+    sdcard_internal.te \
+    sdcardd.te \
+    sensors.te \
+    shell.te \
+    surfaceflinger.te \
+    system.te \
+    tee.te \
+    te_macros \
+    thermald.te \
+    ueventd.te \
+    vold.te \
+    wpa_supplicant.te \
+    zygote.te
+
+ifneq ($(TARGET_BUILD_VARIANT),user)
+    BOARD_SEPOLICY_UNION += su.te
+endif
 
 # Vold
 BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
@@ -149,12 +181,11 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/
 
 # Wifi
 BOARD_HAS_QCOM_WLAN := true
-BOARD_HAS_QCOM_WLAN_SDK := true
+BOARD_WLAN_DEVICE := qcwcn
 BOARD_HOSTAPD_DRIVER := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_qcwcn
-BOARD_WLAN_DEVICE := qcwcn
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_qcwcn
-WIFI_DRIVER_FW_PATH_AP := "ap"
-WIFI_DRIVER_FW_PATH_STA := "sta"
+WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/wlan.ko"
+WIFI_DRIVER_MODULE_NAME := "wlan"
 WPA_SUPPLICANT_VERSION := VER_0_8_X
