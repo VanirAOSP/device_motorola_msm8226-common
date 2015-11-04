@@ -79,6 +79,7 @@ PRODUCT_COPY_FILES += \
 
 # Camera
 PRODUCT_PACKAGES += \
+    libboringssl-compat \
     libxml2
 
 # Display
@@ -128,6 +129,10 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
     $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
     $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
+
+# Motorola
+PRODUCT_PACKAGES += \
+    libmoto
 
 # OMX
 PRODUCT_PACKAGES += \
