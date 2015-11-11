@@ -1,12 +1,13 @@
 # Binaries
 /system/bin/akmd8963                                        u:object_r:akmd8963_exec:s0
 /system/bin/batt_health                                     u:object_r:batt_health_exec:s0
+/system/bin/charge_only_mode                                u:object_r:charge_only_mode_exec:s0
 /system/bin/dbvc_atvc_property_set                          u:object_r:atvc_exec:s0
 /system/bin/sensord                                         u:object_r:sensord_exec:s0
+/system/bin/dump_pds.sh                                     u:object_r:dump_pds_exec:s0
 
 # Camera
 /data/cam_socket([0-9])+                                    u:object_r:camera_socket:s0
-/data/fdAlbum                                               u:object_r:camera_data_file:s0
 
 # CMHW
 /sys/devices/virtual/graphics/fb0/hbm                       u:object_r:livedisplay_sysfs:s0
@@ -29,6 +30,7 @@
 /dev/block/bootdevice/by-name/dhob                          u:object_r:hob_block_device:s0
 /dev/block/bootdevice/by-name/hob                           u:object_r:hob_block_device:s0
 /dev/block/bootdevice/by-name/logs                          u:object_r:logs_block_device:s0
+/dev/block/bootdevice/by-name/pds                           u:object_r:pds_block_device:s0
 /dev/block/bootdevice/by-name/recovery                      u:object_r:recovery_block_device:s0
 /dev/block/bootdevice/by-name/userdata                      u:object_r:userdata_block_device:s0
 /dev/block/bootdevice/by-name/utags                         u:object_r:utags_block_device:s0
@@ -53,3 +55,9 @@
 /sys/devices/f9925000.i2c/i2c-3/3-0048/temp1_input          u:object_r:sysfs_thermal:s0
 /sys/devices/f9925000.i2c/i2c-3/3-0048/temp1_max            u:object_r:sysfs_thermal:s0
 /sys/devices/f9925000.i2c/i2c-3/3-0048/temp1_max_hyst       u:object_r:sysfs_thermal:s0
+
+# Power
+/sys/power/autosleep                                        u:object_r:sysfs_power:s0
+
+# Light
+/sys/devices/fd900000\.qcom,mdss_mdp/qcom,mdss_fb_primary\..*/leds/lcd-backlight/brightness    u:object_r:sysfs_light:s0
