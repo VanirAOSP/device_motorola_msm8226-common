@@ -106,10 +106,8 @@ PRODUCT_PACKAGES += \
 
 # FM
 PRODUCT_PACKAGES += \
-    FM2 \
-    FMRecord \
-    libqcomfm_jni \
-    qcom.fmradio
+    FMRadio \
+    libfmjni
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -164,6 +162,7 @@ PRODUCT_PACKAGES += \
 # Ramdisk
 PRODUCT_PACKAGES += \
     init.qcom.bt.sh \
+    init.qcom.fm.sh \
     init.qcom.ril.sh \
     dump_pds.sh
 
@@ -175,10 +174,6 @@ PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
     init.recovery.qcom.rc \
     ueventd.qcom.rc
-
-# Stlport
-PRODUCT_PACKAGES += \
-    libstlport
 
 # Thermal
 PRODUCT_COPY_FILES += \
