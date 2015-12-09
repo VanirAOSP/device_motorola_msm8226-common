@@ -49,6 +49,9 @@ BOARD_DTBTOOL_ARGS := --force-v2
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 TARGET_KERNEL_SOURCE := kernel/motorola/msm8226
 
+# ANT+
+BOARD_ANT_WIRELESS_DEVICE := "qualcomm-smd"
+
 # Audio
 AUDIO_FEATURE_ENABLED_MULTI_VOICE_SESSIONS := true
 AUDIO_FEATURE_ENABLED_NEW_SAMPLE_RATE := true
@@ -113,12 +116,6 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(VENDOR_PATH)
 -include device/qcom/sepolicy/sepolicy.mk
 
 BOARD_SEPOLICY_DIRS += $(VENDOR_PATH)/sepolicy
-
-# Vold
-BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
-BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
-BOARD_VOLD_MAX_PARTITIONS := 40
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/file
 
 # Wifi
 BOARD_HAS_QCOM_WLAN := true
