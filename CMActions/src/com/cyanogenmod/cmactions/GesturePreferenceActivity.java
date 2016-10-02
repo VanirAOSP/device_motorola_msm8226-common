@@ -17,26 +17,16 @@
 package com.cyanogenmod.cmactions;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.view.MenuItem;
 
-public class GesturePreferenceActivity extends PreferenceActivity {
+import com.android.settingslib.drawer.SettingsDrawerActivity;
+
+public class GesturePreferenceActivity extends SettingsDrawerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
         getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new GesturePreferenceFragment()).commit();
+                .replace(R.id.content_frame, new GesturePreferenceFragment()).commit();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return false;
-    }
 }
